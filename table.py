@@ -22,7 +22,28 @@ pdf_links = [
 #     except:
 #         print('Opção inválida, escolha outra')
 
-link_pdf = pdf_links[0] # usando os validos
+ntable = 0
+link_pdf = pdf_links[ntable] # usando os validos
+
+def filterTable(temp_table):
+    for row in range(0, len(temp_table.df)):
+        if temp_table.df.at[row, 3] != '':
+            for col in range(0, len(temp_table.df.columns)):
+                if temp_table.df.at[row, col] == '':
+                    # print(f'{temp_table.df.at[row-1, col]} {temp_table.df.at[row+1, col]}')
+                    temp_table.df.at[row,col] = f'{temp_table.df.at[row-1, col]} {temp_table.df.at[row+1, col]}'
+
+    for row in range(0, len(temp_table.df)):
+        if temp_table.df.at[row, 3] == '':
+            temp_table.df = temp_table.df.drop(index=row)
+        
+    temp_table.df = temp_table.df.reset_index(drop=True)
+    
+    return temp_table
+
+
+
+# init
 
 temp_init = time()
 
@@ -42,21 +63,16 @@ for pg in range(0, len(tables)):
     
     table = tables[pg]
 
+
+
     if pg == 0:
-        table.df = table.df[2:].reset_index(drop=True)
+        match ntable:
+            case 0:
+                table.df = table.df[2:].reset_index(drop=True)
+            case 1:
+                table.df = table.df[4:].reset_index(drop=True)
 
-    for row in range(0, len(table.df)):
-        if table.df.at[row, 3] != '':
-            for col in range(0, 7):
-                if table.df.at[row, col] == '':
-                    print(f'{table.df.at[row-1, col]} {table.df.at[row+1, col]}')
-                    table.df.at[row,col] = f'{table.df.at[row-1, col]} {table.df.at[row+1, col]}'
-
-    for row in range(0, len(table.df)):
-        if table.df.at[row, 3] == '':
-            table.df = table.df.drop(index=row)
-        
-    table.df = table.df.reset_index(drop=True)
+    table = filterTable(table)
 
     display(table.df)
 
