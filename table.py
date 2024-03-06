@@ -89,14 +89,14 @@ def getDatas(ntable):
                 case 3:
                     table.df = table.df[4:].reset_index(drop=True)
 
-        table = filterTable(table)
+        # table = filterTable(table)
 
         display(table.df)
 
         npg += 1
 
 
-getDatas(1) #usando a tabela validos A
+getDatas(3) #usando a tabela validos A
 
 
 

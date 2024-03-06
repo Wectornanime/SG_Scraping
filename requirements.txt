@@ -1,3 +1,8 @@
 PyPDF2
 camelot-py
 opencv-python
+requests
+pandas
+bs4
+tabula-py
+selenium
