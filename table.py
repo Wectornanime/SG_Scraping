@@ -22,9 +22,6 @@ pdf_links = [
 #     except:
 #         print('Opção inválida, escolha outra')
 
-ntable = 0
-link_pdf = pdf_links[ntable] # usando os validos
-
 def filterTable(temp_table):
     for row in range(0, len(temp_table.df)):
         if temp_table.df.at[row, 3] != '':
@@ -42,42 +39,40 @@ def filterTable(temp_table):
     return temp_table
 
 
-
-# init
-
-temp_init = time()
-
-tables = camelot.read_pdf(link_pdf, flavor='stream', pages='all', flag='text')
-
-npg = 0
-
-for pg in range(0, len(tables)):
-    if npg == 10:
-        a = input('Enter para continuar')
-        npg = 0
+def getDatas(ntable):
+    link_pdf = pdf_links[ntable]
+    tables = camelot.read_pdf(link_pdf, flavor='stream', pages='all', flag='text')
     
-    print('\n\n')
-    print('='*100)
-    print(f'pag: {pg}')
-    print('='*100, end='\n\n')
-    
-    table = tables[pg]
+    npg = 0
+
+    for pg in range(0, len(tables)):
+        if npg == 10:
+            a = input('Enter para continuar')
+            npg = 0
+        
+        print('\n\n')
+        print('='*100)
+        print(f'pag: {pg}')
+        print('='*100, end='\n\n')
+        
+        table = tables[pg]
+
+        if pg == 0:
+            match ntable:
+                case 0:
+                    table.df = table.df[2:].reset_index(drop=True)
+                case 1:
+                    table.df = table.df[4:].reset_index(drop=True)
+
+        table = filterTable(table)
+
+        display(table.df)
+
+        npg += 1
+
+
+getDatas(0) #usando a tabela validos A
 
 
 
-    if pg == 0:
-        match ntable:
-            case 0:
-                table.df = table.df[2:].reset_index(drop=True)
-            case 1:
-                table.df = table.df[4:].reset_index(drop=True)
 
-    table = filterTable(table)
-
-    display(table.df)
-
-    npg += 1
-
-
-temp_exec = time() - temp_init
-# print(f'\n\nTempo de execução: {temp_exec:.5f}s')
