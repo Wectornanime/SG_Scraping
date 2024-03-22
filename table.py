@@ -96,7 +96,7 @@ def getDatas(ntable):
         npg += 1
 
 
-getDatas(3) #usando a tabela validos A
+getDatas(2) #usando a tabela validos B
 
 
 
